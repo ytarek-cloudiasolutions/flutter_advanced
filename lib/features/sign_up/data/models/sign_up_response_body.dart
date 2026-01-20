@@ -1,18 +1,18 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'login_response_body.g.dart';
+part 'sign_up_response_body.g.dart';
 
 @JsonSerializable()
-class LoginResponseBody {
+class SignUpResponseBody {
   String? message;
   @JsonKey(name: 'data')
   UserData? userData;
   bool? status;
   int? code;
 
-  LoginResponseBody({this.message, this.userData, this.status, this.code});
+  SignUpResponseBody({this.message, this.userData, this.status, this.code});
 
-  factory LoginResponseBody.fromJson(Map<String, dynamic> json) =>
-      _$LoginResponseBodyFromJson(json);
+  factory SignUpResponseBody.fromJson(Map<String, dynamic> json) =>
+      _$SignUpResponseBodyFromJson(json);
 }
 
 @JsonSerializable()
