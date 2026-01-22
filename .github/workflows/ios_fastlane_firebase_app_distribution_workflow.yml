@@ -24,8 +24,10 @@ jobs:
       with:
         channel: stable
 
-    - name: Install CocoaPods
-      run: sudo gem install cocoapods
+    - name: Reinstall CocoaPods cleanly
+      run: |
+        sudo gem uninstall cocoapods -aIx || true
+        sudo gem install cocoapods
 
     - name: Install dependencies
       run: flutter pub get
