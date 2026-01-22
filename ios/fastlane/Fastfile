@@ -1,0 +1,16 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Lane for iOS Firebase App Distribution"
+  lane :firebase_distribution do
+    sh "flutter clean"
+    sh "flutter build ipa --release --flavor production --target lib/main_production.dart"
+    firebase_app_distribution(
+      app: "1:1054208384677:ios:5464f0c682e759cd83f74c",
+      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+      ipa_path: "../build/ios/ipa/Runner.ipa",
+      testers: "youseftareq182002@gmail.com",
+      release_notes: "Testing iOS distribution with GitHub Actions"
+    )
+  end
+end
