@@ -42,6 +42,12 @@ dependencies:
   # For adapting screen and font size.
   flutter_screenutil: ^5.9.3
   firebase_core: ^4.4.0
+  # Flutter library to load and cache network images.
+  cached_network_image: ^3.4.1
+  # Reading and writing simple key-value pairs
+  shared_preferences: ^2.5.4
+  # Provide API to store data in secure storage.
+  flutter_secure_storage: ^10.0.0
 
 
 
