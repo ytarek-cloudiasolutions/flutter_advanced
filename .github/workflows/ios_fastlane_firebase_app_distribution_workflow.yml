@@ -1,4 +1,4 @@
-name: iOS Fastlane with Firebase App Distribution Workflow
+name: iOSS Fastlane with Firebase App Distribution Workflow
 
 on:
   push:
