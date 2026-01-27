@@ -5,12 +5,14 @@ import 'package:flutter_complete_project/core/theming/colors.dart';
 import 'package:flutter_complete_project/features/home/data/models/specializations_response_model.dart';
 import 'package:flutter_complete_project/features/home/logic/home_cubit.dart';
 import 'package:flutter_complete_project/features/home/logic/home_state.dart';
-import 'package:flutter_complete_project/features/home/ui/widgets/doctors_list_view.dart';
-import 'package:flutter_complete_project/features/home/ui/widgets/doctors_speciality_list_view.dart';
+import 'package:flutter_complete_project/features/home/ui/widgets/doctors_list/doctors_list_view.dart';
+import 'package:flutter_complete_project/features/home/ui/widgets/doctors_list/doctors_shimmer_loading.dart';
+import 'package:flutter_complete_project/features/home/ui/widgets/specializations_list/speciality_list_view.dart';
+import 'package:flutter_complete_project/features/home/ui/widgets/specializations_list/speciality_shimmer_loading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SpecializationsAndDoctorsBlocBuilder extends StatelessWidget {
-  const SpecializationsAndDoctorsBlocBuilder({super.key});
+class SpecializationsBlocBuilder extends StatelessWidget {
+  const SpecializationsBlocBuilder({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +23,11 @@ class SpecializationsAndDoctorsBlocBuilder extends StatelessWidget {
           current is SpecializationsError,
       builder: (context, state) {
         return state.maybeWhen(
-          specializationsloading: () {
+          specializationsLoading: () {
             return setupLoading();
           },
-          specializationsSuccess: (specializationsResponseModel) {
-            var specializationsList =
-                specializationsResponseModel.specializationDataList;
+          specializationsSuccess: (specializationDataList) {
+            var specializationsList = specializationDataList;
             return setupSuccess(specializationsList);
           },
           specializationsError: (errorHandler) {
@@ -40,24 +41,23 @@ class SpecializationsAndDoctorsBlocBuilder extends StatelessWidget {
     );
   }
 
+
+/// Shimmer loading for specializations and doctors  
   Widget setupLoading() {
-    return SizedBox(
-      height: 100.h,
-      child: Center(child: CircularProgressIndicator(color: ColorsManager.mainBlue,),),
+    return Expanded(
+      child: Column(
+        children: [
+          const SpecialityShimmerLoading(),
+          verticalSpace(8),
+          const DoctorsShimmerLoading(),
+        ],
+      ),
     );
   }
 
   Widget setupSuccess(List<SpecializationsData?>? specializationsList) {
-    return Expanded(
-      child: Column(
-        children: [
-          DoctorsSpecialityListView(
-            specializationsDataList: specializationsList ?? [],
-          ),
-          verticalSpace(8),
-          DoctorsListView(doctorsList: specializationsList![0]!.doctorsList),
-        ],
-      ),
+    return SpecialityListView(
+      specializationsDataList: specializationsList ?? [],
     );
   }
 

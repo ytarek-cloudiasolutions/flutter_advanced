@@ -5,6 +5,7 @@ import 'package:flutter_complete_project/core/theming/colors.dart';
 import 'package:flutter_complete_project/core/theming/styles.dart';
 import 'package:flutter_complete_project/features/home/data/models/specializations_response_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 
 class DoctorsListViewItem extends StatelessWidget {
   final Doctors? doctorsModel;
@@ -24,9 +25,30 @@ class DoctorsListViewItem extends StatelessWidget {
                 "https://hips.hearstapps.com/hmg-prod/images/portrait-of-a-happy-young-doctor-in-his-clinic-royalty-free-image-1661432441.jpg?crop=0.66698xw:1xh;center,top&resize=1200:*",
             width: 110.w,
             height: 120.h,
-            progressIndicatorBuilder: (context, url, downloadProgress) =>
-                CircularProgressIndicator(value: downloadProgress.progress,color: ColorsManager.mainBlue,),
-            errorWidget: (context, url, error) => Icon(Icons.error),
+            progressIndicatorBuilder: (context, url, downloadProgress) {
+              return Shimmer.fromColors(
+                baseColor: ColorsManager.lightGray,
+                highlightColor: Colors.white,
+                child: Container(
+                  width: 110.w,
+                  height: 120.h,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(12.0),
+                    color: Colors.white,
+                  ),
+                ),
+              );
+            },
+            imageBuilder: (context, imageProvider) => Container(
+              width: 110.w,
+              height: 120.h,
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(12.0),
+                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+              ),
+            ),
           ),
           // ClipRRect(
           //   borderRadius: BorderRadius.circular(12.0),

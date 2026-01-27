@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_complete_project/core/helpers/spacing.dart';
 import 'package:flutter_complete_project/core/theming/styles.dart';
 import 'package:flutter_complete_project/features/home/data/models/specializations_response_model.dart';
-import 'package:flutter_complete_project/features/home/ui/widgets/doctors_list_view_item.dart';
+import 'package:flutter_complete_project/features/home/ui/widgets/doctors_list/doctors_list_view_item.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DoctorsListView extends StatelessWidget {
