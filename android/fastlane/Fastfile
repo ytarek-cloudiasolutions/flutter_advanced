@@ -5,25 +5,15 @@ default_platform(:android)
 # bundle exec fastlane firebase_distribution
 
 platform :android do
-  desc "Release to Firebase using Shorebird + AAB"
+  desc "Lane for Android Firebase App Distribution"
   lane :firebase_distribution do
-    # Clean build
-    sh "flutter clean"
-
-    # Shorebird release to bump version/build number
-    sh "shorebird release android --target ./lib/main_production.dart --flavor production"
-
-    # Build AAB with the correct version
-    sh "flutter build appbundle --release --flavor production --target lib/main_production.dart --no-tree-shake-icons"
-
-    # Upload to Firebase
     firebase_app_distribution(
-      app: "1:1054208384677:android:a6d41d143948d4bc83f74c",
-      firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
-      android_artifact_type: "AAB",
-      android_artifact_path: "../build/app/outputs/flutter-apk/app-production-release.aab",
-      testers: "youseftareq182002@gmail.com",
-      release_notes: "Testing Shorebird + AAB distribution",
-    )
+        app: "1:1054208384677:android:a6d41d143948d4bc83f74c",
+        firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
+        android_artifact_type: "APK",
+        android_artifact_path: "../build/app/outputs/flutter-apk/app-production-release.abb",
+        testers: "youseftareq182002@gmail.com",
+        release_notes: "Testing something with GitHub Actions, trying to push directly from master branch",
+  )
   end
 end
