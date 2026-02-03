@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_complete_project/features/home/logic/home_cubit.dart';
@@ -21,7 +18,7 @@ class DoctorsBlocBuilder extends StatelessWidget {
           doctorsSuccess: (doctorsList) {
             return setupSuccess(doctorsList);
           },
-          doctorsError: (errorHandler) => setupError(),
+          doctorsError: () => setupError(),
           orElse: () {
             return const SizedBox.shrink();
           },
@@ -31,9 +28,7 @@ class DoctorsBlocBuilder extends StatelessWidget {
   }
 
   Widget setupSuccess(doctorsList) {
-    return DoctorsListView(
-      doctorsList: doctorsList,
-    );
+    return DoctorsListView(doctorsList: doctorsList);
   }
 
   Widget setupError() {
