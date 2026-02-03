@@ -10,8 +10,8 @@ platform :android do
     firebase_app_distribution(
         app: "1:1054208384677:android:a6d41d143948d4bc83f74c",
         firebase_cli_token: ENV["FIREBASE_CLI_TOKEN"],
-        android_artifact_type: "APK",
-        android_artifact_path: "../build/app/outputs/flutter-apk/app-production-release.abb",
+        android_artifact_type: "AAB",
+        android_artifact_path: "../build/app/outputs/bundle/productionRelease/app-production-release.aab",
         testers: "youseftareq182002@gmail.com",
         release_notes: "Testing something with GitHub Actions, trying to push directly from master branch",
   )

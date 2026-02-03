@@ -1,4 +1,4 @@
-name: Android Fastlane + Shorebird + Firebase
+name: Android | Shorebird + Firebase App Distribution
 
 on:
   push:
@@ -6,23 +6,29 @@ on:
       - main
 
 jobs:
-  release:
+  release-android:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
+      # 1️⃣ Checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
 
+      # 2️⃣ Java (required for Android)
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: "17"
-          distribution: "temurin"
+          distribution: temurin
+          java-version: 17
 
+      # 3️⃣ Flutter
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+          cache: true
 
+      # 4️⃣ Ruby (for Fastlane)
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -30,18 +36,30 @@ jobs:
           bundler-cache: true
           working-directory: android
 
+      # 5️⃣ Install Shorebird
       - name: Install Shorebird CLI
         run: |
-          dart pub global activate shorebird_cli
+          dart pub global activate shorebird
+          echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
 
-      - name: Shorebird release
+      # 6️⃣ Verify Shorebird
+      - name: Verify Shorebird
+        run: shorebird --version
+
+      # 7️⃣ Shorebird Release (BUILD HAPPENS HERE)
+      - name: Shorebird Android Release
         run: |
-          shorebird release android --target ./lib/main_production.dart --flavor production
+          shorebird release android \
+            --flavor production \
+            --target lib/main_production.dart
 
-      - name: Build path debug
-        run: ls build/app/outputs/flutter-apk/
+      # 8️⃣ Debug APK output (VERY IMPORTANT)
+      - name: Verify APK exists
+        run: |
+          ls -la build/app/outputs/bundle/productionRelease/
 
-      - name: Distribute to Firebase
+      # 9️⃣ Distribute via Fastlane → Firebase
+      - name: Distribute to Firebase App Distribution
         env:
           FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
         run: |
