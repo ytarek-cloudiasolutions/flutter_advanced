@@ -1,4 +1,4 @@
-name: Android | Shorebird + Firebase App Distribution
+name: Android Fastlane with Firebase App Distribution Workflow
 
 on:
   push:
@@ -6,53 +6,34 @@ on:
       - main
 
 jobs:
-  release-android:
+  distribute_to_firebase:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout my repo code
+      uses: actions/checkout@v2
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    
+    - name: Install Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: 17
-
-      - name: Install Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          cache: true
-
-      - name: Setup Ruby (Fastlane)
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.2.3"
-          bundler-cache: true
-          working-directory: android
-
-      - name: Install Shorebird CLI
-        run: |
-          dart pub global activate shorebird
-          echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
-
-      - name: Verify Shorebird
-        run: shorebird --version
-
-      - name: Shorebird Android Release
-        run: |
-          shorebird release android \
-            --flavor production \
-            --target lib/main_production.dart
-
-      - name: Debug AAB output
-        run: |
-          ls -la build/app/outputs/bundle/productionRelease/
-
-      - name: Distribute via Fastlane → Firebase
-        env:
-          FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
-        run: |
-          bundle exec fastlane android firebase_distribution
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: "3.2.3"
+        bundler-cache: true
         working-directory: android
+        
+    - name: Build and Distribute App
+      env:
+        FIREBASE_CLI_TOKEN: ${{ secrets.FIREBASE_CLI_TOKEN }}
+      run: |
+        bundle exec fastlane android firebase_distribution
+      working-directory: android
+
