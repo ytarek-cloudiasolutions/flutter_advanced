@@ -21,7 +21,7 @@ Future<void> checkIfLoggedInUser() async {
     SharedPreKeys.userToken,
   );
 
-  if (userToken.isNullOrEmpty()) {
+  if (!userToken.isNullOrEmpty()) {
     isLoggedInUser = true;
   } else {
     isLoggedInUser = false;
